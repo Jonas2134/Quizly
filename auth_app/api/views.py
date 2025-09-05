@@ -1,4 +1,5 @@
 from rest_framework import status, generics
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -18,6 +19,7 @@ class RegisterView(generics.CreateAPIView):
             message = {"detail": "User created successfully!"}
             return Response(message, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
@@ -46,3 +48,24 @@ class LoginView(TokenObtainPairView):
                 samesite='Lax'
             )
         return response
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        refresh_token = request.COOKIES.get('refresh_token')
+        if refresh_token is None:
+            return Response({"detail": "Refresh token not found."}, status=status.HTTP_400_BAD_REQUEST)
+            
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except TokenError:
+            return Response({"detail": "Token invalid"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        response = Response({"detail": "Log-Out successfully! All Tokens will be deleted. Refresh token is now invalid."}, status=status.HTTP_200_OK)
+        response.delete_cookie('refresh_token')
+        response.delete_cookie('access_token')
+        return response
+        
