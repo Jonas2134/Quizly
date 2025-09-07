@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import time
 
 from google import genai
@@ -7,6 +8,11 @@ from django.conf import settings
 
 
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
+
+
+def parse_genai_json(text_output:str):
+    cleaned = re.sub(r"^```json\s*|```$", "", text_output.strip())
+    return json.loads(cleaned)
 
 
 def generate_questions(transcript: str) -> dict:
@@ -50,11 +56,7 @@ Transcript:
         model="gemini-2.5-flash",
         contents=prompt
     )
-    text_output = response.result[0].content
+    text_output = response.text
+    quiz_data = parse_genai_json(text_output)
 
-    try:
-        quiz = json.loads(text_output)
-    except json.JSONDecodeError as e:
-        raise ValueError(f"Invalid JSON returned by GenAI: {e}\n\nOutput:\n{text_output}")
-
-    return quiz
+    return quiz_data

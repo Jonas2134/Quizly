@@ -20,6 +20,7 @@ def process_video(quiz_id: int):
 
     for q in quiz_data["questions"]:
         question = Question.objects.create(
+            quiz=quiz,
             question_title=q['question_title'],
             question_options=q['question_options'],
             answer=q['answer']

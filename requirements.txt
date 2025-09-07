@@ -8,6 +8,7 @@ charset-normalizer==3.4.3
 click==8.2.1
 croniter==6.0.0
 Django==5.2.6
+django-cors-headers==4.7.0
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
 filelock==3.19.1
