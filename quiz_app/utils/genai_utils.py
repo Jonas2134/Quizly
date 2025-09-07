@@ -15,7 +15,7 @@ def parse_genai_json(text_output:str):
     return json.loads(cleaned)
 
 
-def generate_questions(transcript: str) -> dict:
+def generate_questions(transcript: str, transcript_file: str) -> dict:
     """
     Generate 10 multiple-choice questions using Google GenAI.
     """
@@ -58,5 +58,9 @@ Transcript:
     )
     text_output = response.text
     quiz_data = parse_genai_json(text_output)
+
+    if os.path.exists(transcript_file) and os.path.exists(prompt_file):
+        os.remove(transcript_file)
+        os.remove(prompt_file)
 
     return quiz_data

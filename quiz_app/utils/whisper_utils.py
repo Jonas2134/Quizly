@@ -44,5 +44,8 @@ def whisper_transcribe(video_url: str, model_size: str = "base") -> str:
     transcript_file = os.path.join(settings.TMP_TRANSCRIPTS_DIR, f"transcript_{int(time.time())}.txt")
     with open(transcript_file, 'w', encoding='utf-8') as f:
         f.write(transcript)
+    
+    if os.path.exists(audio_file):
+        os.remove(audio_file)
 
-    return transcript
+    return transcript, transcript_file

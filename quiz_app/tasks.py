@@ -11,8 +11,8 @@ def process_video(quiz_id: int):
     4. Save Quiz and Questions to the database
     """
     quiz = Quiz.objects.get(id=quiz_id)
-    transcript = whisper_transcribe(quiz.video_url)
-    quiz_data = generate_questions(transcript)
+    transcript, transcript_file = whisper_transcribe(quiz.video_url)
+    quiz_data = generate_questions(transcript, transcript_file)
 
     quiz.title = quiz_data["title"]
     quiz.description = quiz_data["description"]
