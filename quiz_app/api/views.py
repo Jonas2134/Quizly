@@ -1,6 +1,3 @@
-import django_rq
-
-from django_rq import get_queue
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,19 +7,18 @@ from .serializers import CreateQuizSerializer, QuizSerializer
 from quiz_app.tasks import process_video
 
 
-
-
 class CreateQuizView(generics.CreateAPIView):
-    serializer_class = CreateQuizSerializer
     permission_classes = [IsAuthenticated]
+    
+    def create(self, request, *args, **kwargs):
+        serializer = CreateQuizSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    def perform_create(self, serializer):
         instance = serializer.save()
 
-        queue = get_queue('default')
-        job = queue.enqueue(
-            process_video,
-            instance.video_url,
-            instance.title,
-            instance.description
-        )
+        process_video(instance.id)
+
+        instance.refresh_from_db()
+
+        output_serializer = QuizSerializer(instance)
+        return Response(output_serializer.data, status=status.HTTP_201_CREATED)

@@ -18,12 +18,29 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
+# Gemini API Key
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
+# Raise error if GEMINI_API_KEY is not set
 if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY is not set in environment variables")
+
+
+# Media files directory and make sure it exists
+MEDIA_DIR = os.path.join(BASE_DIR, 'media')
+os.makedirs(MEDIA_DIR, exist_ok=True)
+
+# Temporary files directory
+TMP_AUDIO_DIR = os.path.join(MEDIA_DIR, 'tmp_audio')
+TMP_TRANSCRIPTS_DIR = os.path.join(MEDIA_DIR, 'tmp_transcripts')
+TMP_PROMPT_DIR = os.path.join(MEDIA_DIR, 'tmp_prompts')
+
+# Create temp directories if they don't exist
+for folder in [TMP_AUDIO_DIR, TMP_TRANSCRIPTS_DIR, TMP_PROMPT_DIR]:
+    os.makedirs(folder, exist_ok=True)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -46,7 +63,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_rq',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -91,25 +107,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
-RQ_QUEUES = {
-    'default': {
-        'HOST': '127.0.0.1',
-        'PORT': 6379,
-        'DB': 0,
-        'DEFAULT_TIMEOUT': 360,
     }
 }
 

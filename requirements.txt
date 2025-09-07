@@ -8,8 +8,6 @@ charset-normalizer==3.4.3
 click==8.2.1
 croniter==6.0.0
 Django==5.2.6
-django-redis==6.0.0
-django-rq==3.1
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
 filelock==3.19.1
@@ -53,10 +51,8 @@ PyJWT==2.10.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 pytz==2025.2
-redis==6.4.0
 regex==2025.9.1
 requests==2.32.5
-rq==2.6.0
 rsa==4.9.1
 setuptools==80.9.0
 six==1.17.0
