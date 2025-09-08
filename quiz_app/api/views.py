@@ -2,7 +2,9 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.exceptions import NotFound, PermissionDenied
 
+from .permissions import IsUserQuizCreatorPermission
 from .serializers import CreateQuizSerializer, QuizSerializer
 from quiz_app.tasks import process_video
 from quiz_app.models import Quiz
@@ -26,9 +28,24 @@ class CreateQuizView(generics.CreateAPIView):
 
 
 class QuizListView(generics.ListAPIView):
+    queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Quiz.objects.all()
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
+class QuizReviewPutPatchDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = QuizSerializer
+    permission_classes = [IsAuthenticated, IsUserQuizCreatorPermission]
+
+    def get_object(self):
+        quiz_id = self.kwargs.get('pk')
+        try:
+            quiz = Quiz.objects.get(pk=quiz_id)
+        except Quiz.DoesNotExist:
+            raise NotFound('Quiz not found.')
+        return quiz
+
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
