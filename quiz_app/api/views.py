@@ -14,7 +14,7 @@ class CreateQuizView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     
     def create(self, request, *args, **kwargs):
-        serializer = CreateQuizSerializer(data=request.data)
+        serializer = CreateQuizSerializer(data=request.data, context={'user': request.user})
         serializer.is_valid(raise_exception=True)
 
         instance = serializer.save()
@@ -34,6 +34,7 @@ class QuizListView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
 
 class QuizReviewPutPatchDeleteView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = QuizSerializer
