@@ -3,7 +3,7 @@ from quiz_app.utils.whisper_utils import whisper_transcribe
 from quiz_app.utils.genai_utils import generate_questions
 
 
-def process_video(quiz_id: int):
+def generate_quiz(quiz_id: int):
     """
     1. Load Quiz instance by ID
     2. Transcribe video with Whisper
@@ -26,5 +26,21 @@ def process_video(quiz_id: int):
             answer=q['answer']
         )
         quiz.questions.add(question)
+    return quiz.id
 
+
+def update_generated_quiz(quiz_id: int):
+    quiz = Quiz.objects.get(id=quiz_id)
+    transcript, transcript_file = whisper_transcribe(quiz.video_url)
+    quiz_data = generate_questions(transcript, transcript_file)
+
+    quiz.questions.all().delete()
+
+    for q in quiz_data["questions"]:
+        Question.objects.create(
+            quiz=quiz,
+            question_title=q["question_title"],
+            question_options=q["question_options"],
+            answer=q["answer"],
+        )
     return quiz.id

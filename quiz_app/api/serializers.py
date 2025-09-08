@@ -34,3 +34,9 @@ class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
         fields = ['id', 'title', 'description', 'video_url', 'created_at', 'updated_at', 'questions']
+
+
+class UpdatedQuizSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quiz
+        fields = ['title', 'description', 'video_url']
