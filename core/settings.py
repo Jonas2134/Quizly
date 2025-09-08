@@ -42,6 +42,10 @@ for folder in [TMP_AUDIO_DIR, TMP_TRANSCRIPTS_DIR, TMP_PROMPT_DIR]:
     os.makedirs(folder, exist_ok=True)
 
 
+def str_to_bool(value: str) -> bool:
+    return value.lower() in ("true", "1", "yes", "on")
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -171,8 +175,8 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5500',
     'http://127.0.0.1:5500',
 ]
-CORS_ALLOW_CREDENTIALS = True
