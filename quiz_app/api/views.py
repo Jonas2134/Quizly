@@ -79,3 +79,6 @@ class QuizReviewPutPatchDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
         output_serializer = self.get_serializer(quiz)
         return Response(output_serializer.data, status=status.HTTP_200_OK)
+    
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
