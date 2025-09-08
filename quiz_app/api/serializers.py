@@ -22,7 +22,6 @@ class CreateQuizSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Question
         fields = ['id', 'question_title', 'question_options', 'answer', 'created_at', 'updated_at']

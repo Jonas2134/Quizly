@@ -1,8 +1,7 @@
 from rest_framework import status, generics
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.exceptions import NotFound, ValidationError
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import NotFound
 
 from .permissions import IsUserQuizCreatorPermission
 from .serializers import CreateQuizSerializer, QuizSerializer, UpdatedQuizSerializer
@@ -16,13 +15,9 @@ class CreateQuizView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = CreateQuizSerializer(data=request.data, context={'user': request.user})
         serializer.is_valid(raise_exception=True)
-
         instance = serializer.save()
-
         generate_quiz(instance.id)
-
         instance.refresh_from_db()
-
         output_serializer = QuizSerializer(instance)
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
 

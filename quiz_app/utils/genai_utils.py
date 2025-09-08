@@ -15,11 +15,8 @@ def parse_genai_json(text_output:str):
     return json.loads(cleaned)
 
 
-def generate_questions(transcript: str, transcript_file: str) -> dict:
-    """
-    Generate 10 multiple-choice questions using Google GenAI.
-    """
-    prompt = f"""
+def return_prompt(transcript: str):
+    return f"""
 Based on the following transcript, generate a quiz in valid JSON format.
 
 The quiz must follow this exact structure:
@@ -47,6 +44,13 @@ Requirements:
 Transcript:
 {transcript}
     """
+
+
+def generate_questions(transcript: str, transcript_file: str) -> dict:
+    """
+    Generate 10 multiple-choice questions using Google GenAI.
+    """
+    prompt = return_prompt(transcript)
 
     prompt_file = os.path.join(settings.TMP_PROMPT_DIR, f"prompt_{int(time.time())}.txt")
     with open(prompt_file, "w", encoding="utf-8") as f:
