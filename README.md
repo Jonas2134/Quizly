@@ -56,7 +56,7 @@ This is the backend code for Quizly, a quiz application that allows users to cre
    Create them with:
 
    ```bash
-   cp .env.example .env
+   cp .env.templates .env
    ```
 
    and edit the `.env` file to configure your environment variables.
