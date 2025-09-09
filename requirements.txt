@@ -19,6 +19,7 @@ h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
 idna==3.10
+iniconfig==2.1.0
 Jinja2==3.1.6
 llvmlite==0.44.0
 MarkupSafe==3.0.2
@@ -43,12 +44,17 @@ nvidia-nccl-cu12==2.27.3
 nvidia-nvjitlink-cu12==12.8.93
 nvidia-nvtx-cu12==12.8.90
 openai-whisper==20250625
+packaging==25.0
+pluggy==1.6.0
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pycryptodomex==3.23.0
 pydantic==2.11.7
 pydantic_core==2.33.2
+Pygments==2.19.2
 PyJWT==2.10.1
+pytest==8.4.2
+pytest-django==4.11.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 pytz==2025.2
