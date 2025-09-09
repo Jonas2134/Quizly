@@ -11,11 +11,13 @@ client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
 
 def parse_genai_json(text_output:str):
+    """Parse the JSON output from Google GenAI."""
     cleaned = re.sub(r"^```json\s*|```$", "", text_output.strip())
     return json.loads(cleaned)
 
 
 def return_prompt(transcript: str):
+    """Return the prompt for Google GenAI to generate quiz questions."""
     return f"""
 Based on the following transcript, generate a quiz in valid JSON format.
 
@@ -49,6 +51,14 @@ Transcript:
 def generate_questions(transcript: str, transcript_file: str) -> dict:
     """
     Generate 10 multiple-choice questions using Google GenAI.
+    Each question includes a title, four options, and one correct answer.
+
+    Args:
+        transcript (str): The transcript text to base the questions on.
+        transcript_file (str): The path to the transcript file (for cleanup).
+
+    Returns:
+        dict: A dictionary containing the quiz title, description, and questions.
     """
     prompt = return_prompt(transcript)
 
