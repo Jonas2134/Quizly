@@ -1,0 +1,10 @@
+# This dependency list is specifically for MacOS, using flexible versions for compatibility
+
+-r requirements-common.txt
+
+# ML dependencies with flexible versions for better MacOS compatibility
+llvmlite
+numba
+numpy>=2.0.0
+torch
+# Note: triton is not included here as it's only needed for Linux with NVIDIA GPU acceleration

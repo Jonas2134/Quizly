@@ -1,0 +1,9 @@
+# This dependency list contains ML-specific requirements for Linux without NVIDIA GPU and Windows.
+
+-r requirements-common.txt
+
+llvmlite==0.44.0
+numba==0.61.2
+numpy==2.2.6
+torch==2.8.0
+# Note: triton is not included here as it's only needed for Linux with NVIDIA GPU acceleration

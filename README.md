@@ -38,21 +38,16 @@ This is the backend code for Quizly, a quiz application that allows users to cre
 2. Create a virtual environment
 
    ```bash
-    # Linux/macOS
-    python3 -m venv env
-    source env/bin/activate
-    # Windows
-    python -m venv env
-    env\Scripts\activate
+   # Linux/macOS
+   python3 -m venv env
+   source env/bin/activate
+
+   # Windows
+   python -m venv env
+   env\Scripts\activate
    ```
 
-3. Install the requirements
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Set up environment variables
+3. Set up environment variables
    Create them with:
 
    ```bash
@@ -73,13 +68,22 @@ This is the backend code for Quizly, a quiz application that allows users to cre
    CORS_ALLOWED_ORIGINS=http://localhost:5500,http://127.0.0.1:5500
    ```
 
+4. Install the requirements
+
+   ```bash
+   # An installation script for handling dependencies for each OS.
+   python install_dependencies.py
+   ```
+
 5. Apply migrations, create a superuser, and start the server
 
    ```bash
    # Run migrations
    python manage.py migrate
+
    # Create a superuser
    python manage.py createsuperuser
+
    # Start the development server
    python manage.py runserver
    ```

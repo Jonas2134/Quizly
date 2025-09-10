@@ -15,7 +15,7 @@ class Quiz(models.Model):
     quiz_creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quizes')
 
     def __str__(self):
-        return self.title
+        return f"Quiz {self.id}"
 
 
 class Question(models.Model):
